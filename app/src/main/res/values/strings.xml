@@ -1,3 +1,9 @@
 <resources>
     <string name="app_name">PracticalTask</string>
+    <string name="student_name">Student Name</string>
+    <string name="male">Male</string>
+    <string name="female">Female</string>
+    <string name="gender">Gender:</string>
+    <string name="add_student">Add Student</string>
+    <string name="click_here_to_upload_image">Click Here to upload image</string>
 </resources>
