@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
+import androidx.cardview.widget.CardView
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
@@ -25,6 +26,7 @@ class StudentAdapter(private val context: Context) :
         val imgDown: ImageView
         val imgStudent: ImageView
         val clExpand: ConstraintLayout
+        val cdView: CardView
 
         init {
             txtStudentId = itemView.findViewById(R.id.txt_student_id)
@@ -33,6 +35,7 @@ class StudentAdapter(private val context: Context) :
             imgDown = itemView.findViewById(R.id.img_down)
             imgStudent = itemView.findViewById(R.id.img_student)
             clExpand = itemView.findViewById(R.id.cl_expand)
+            cdView = itemView.findViewById(R.id.cd_view)
         }
     }
 
@@ -56,7 +59,7 @@ class StudentAdapter(private val context: Context) :
             holder.txtGender.text = "Female"
         }
         holder.imgStudent.setImageBitmap(BitmapFactory.decodeFile(student[position].student_image))
-        holder.imgDown.setOnClickListener {
+        holder.cdView.setOnClickListener {
             if (!holder.clExpand.isVisible) {
                 holder.clExpand.visibility = View.VISIBLE
             } else {
