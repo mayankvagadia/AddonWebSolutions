@@ -27,7 +27,6 @@ import com.AddonWebSolutions.PracticalTask.ViewModel.StudentViewModelFactory
 class StudentRegisterActivity : AppCompatActivity() {
 
     private var ImagePath: String = ""
-    private val REQUEST_ID_MULTIPLE_PERMISSIONS = 0
     private lateinit var edStudentName: EditText
     private lateinit var txtSelectImage: TextView
     private lateinit var rgGender: RadioGroup
@@ -48,9 +47,7 @@ class StudentRegisterActivity : AppCompatActivity() {
         btnAddStudent = findViewById(R.id.btn_add_student)
 
         txtSelectImage.setOnClickListener {
-//            if (checkAndRequestPermissions(this)) {
                 chooseImage(this)
-//            }
         }
 
         btnAddStudent.setOnClickListener {
@@ -77,60 +74,6 @@ class StudentRegisterActivity : AppCompatActivity() {
             studentViewModel.insert(student)
             finish()
         }
-    }
-
-    override fun onRequestPermissionsResult(
-        requestCode: Int,
-        permissions: Array<out String>,
-        grantResults: IntArray,
-    ) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        when (requestCode) {
-            REQUEST_ID_MULTIPLE_PERMISSIONS -> if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.CAMERA
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                Toast.makeText(
-                    applicationContext,
-                    "FlagUp Requires Access to Camara.", Toast.LENGTH_SHORT
-                )
-                    .show()
-            } else if (ContextCompat.checkSelfPermission(
-                    this,
-                    Manifest.permission.WRITE_EXTERNAL_STORAGE
-                ) != PackageManager.PERMISSION_GRANTED
-            ) {
-                Toast.makeText(
-                    applicationContext,
-                    "FlagUp Requires Access to Your Storage.",
-                    Toast.LENGTH_SHORT
-                ).show()
-            } else {
-                chooseImage(this)
-            }
-        }
-    }
-
-    fun checkAndRequestPermissions(context: Activity?): Boolean {
-        val WExtstorePermission = ContextCompat.checkSelfPermission(
-            context!!,
-            Manifest.permission.WRITE_EXTERNAL_STORAGE
-        )
-        val listPermissionsNeeded: MutableList<String> = ArrayList()
-        if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded
-                .add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        }
-        if (listPermissionsNeeded.isNotEmpty()) {
-            ActivityCompat.requestPermissions(
-                context, listPermissionsNeeded
-                    .toTypedArray(),
-                REQUEST_ID_MULTIPLE_PERMISSIONS
-            )
-            return false
-        }
-        return true
     }
 
     private fun chooseImage(context: Context) {
