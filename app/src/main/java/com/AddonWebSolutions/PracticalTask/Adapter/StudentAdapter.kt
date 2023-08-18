@@ -2,7 +2,6 @@ package com.AddonWebSolutions.PracticalTask.Adapter
 
 import android.content.Context
 import android.graphics.BitmapFactory
-import android.media.Image
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,11 +11,12 @@ import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import androidx.recyclerview.widget.RecyclerView.ViewHolder
-import com.AddonWebSolutions.PracticalTask.Model.Student
+import com.AddonWebSolutions.PracticalTask.Database.Entities.Student
 import com.AddonWebSolutions.PracticalTask.R
 
-class StudentAdapter(private val context: Context, private val student: ArrayList<Student>) :
+class StudentAdapter(private val context: Context) :
     RecyclerView.Adapter<StudentAdapter.StudentViewHolder>() {
+    private var student: List<Student> = ArrayList()
 
     class StudentViewHolder(itemView: View) : ViewHolder(itemView) {
         val txtStudentId: TextView
@@ -36,6 +36,11 @@ class StudentAdapter(private val context: Context, private val student: ArrayLis
         }
     }
 
+
+    fun setData(student: List<Student>) {
+        this.student = student
+    }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
         val view = LayoutInflater.from(context).inflate(R.layout.item_student, parent, false)
         return StudentViewHolder(view)
@@ -44,9 +49,9 @@ class StudentAdapter(private val context: Context, private val student: ArrayLis
     override fun onBindViewHolder(holder: StudentViewHolder, position: Int) {
         holder.txtStudentName.text = student[position].student_name
         holder.txtStudentId.text = "" + student[position].student_id
-        if (student[position].student_gender == "1") {
+        if (student[position].student_gender == 1) {
             holder.txtGender.text = "Male"
-        } else if (student[position].student_gender == "2") {
+        } else if (student[position].student_gender == 2) {
             holder.txtGender.text = "Female"
         }
         holder.imgStudent.setImageBitmap(BitmapFactory.decodeFile(student[position].student_image))

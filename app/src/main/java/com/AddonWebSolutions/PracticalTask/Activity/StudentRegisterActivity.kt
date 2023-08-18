@@ -12,12 +12,16 @@ import android.net.Uri
 import android.os.Bundle
 import android.provider.MediaStore
 import android.widget.*
+import androidx.activity.viewModels
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import com.AddonWebSolutions.PracticalTask.Database.SqLiteDB
+import com.AddonWebSolutions.PracticalTask.Database.Entities.Student
 import com.AddonWebSolutions.PracticalTask.R
+import com.AddonWebSolutions.PracticalTask.StudentRecordApplication
+import com.AddonWebSolutions.PracticalTask.ViewModel.StudentViewModel
+import com.AddonWebSolutions.PracticalTask.ViewModel.StudentViewModelFactory
 
 
 class StudentRegisterActivity : AppCompatActivity() {
@@ -29,7 +33,9 @@ class StudentRegisterActivity : AppCompatActivity() {
     private lateinit var rgGender: RadioGroup
     private lateinit var imgSelectedImage: ImageView
     private lateinit var btnAddStudent: Button
-    lateinit var db: SqLiteDB
+    private val studentViewModel: StudentViewModel by viewModels {
+        StudentViewModelFactory((application as StudentRecordApplication).repository)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,12 +46,11 @@ class StudentRegisterActivity : AppCompatActivity() {
         rgGender = findViewById(R.id.rg_gender)
         imgSelectedImage = findViewById(R.id.img_selected_image)
         btnAddStudent = findViewById(R.id.btn_add_student)
-        db = SqLiteDB(this, null)
 
         txtSelectImage.setOnClickListener {
-            if (checkAndRequestPermissions(this)) {
+//            if (checkAndRequestPermissions(this)) {
                 chooseImage(this)
-            }
+//            }
         }
 
         btnAddStudent.setOnClickListener {
@@ -68,7 +73,9 @@ class StudentRegisterActivity : AppCompatActivity() {
                 Toast.makeText(this, "Please Select Image", Toast.LENGTH_SHORT).show()
                 return@setOnClickListener
             }
-            db.addStudent(edStudentName.text.toString(), selectedGender, ImagePath)
+            val student = Student(null, edStudentName.text.toString(), selectedGender, ImagePath)
+            studentViewModel.insert(student)
+//            db.addStudent(edStudentName.text.toString(), selectedGender, ImagePath)
             finish()
         }
     }
@@ -76,7 +83,7 @@ class StudentRegisterActivity : AppCompatActivity() {
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
-        grantResults: IntArray
+        grantResults: IntArray,
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         when (requestCode) {
@@ -111,14 +118,7 @@ class StudentRegisterActivity : AppCompatActivity() {
             context!!,
             Manifest.permission.WRITE_EXTERNAL_STORAGE
         )
-        val cameraPermission = ContextCompat.checkSelfPermission(
-            context,
-            Manifest.permission.CAMERA
-        )
         val listPermissionsNeeded: MutableList<String> = ArrayList()
-        if (cameraPermission != PackageManager.PERMISSION_GRANTED) {
-            listPermissionsNeeded.add(Manifest.permission.CAMERA)
-        }
         if (WExtstorePermission != PackageManager.PERMISSION_GRANTED) {
             listPermissionsNeeded
                 .add(Manifest.permission.WRITE_EXTERNAL_STORAGE)
