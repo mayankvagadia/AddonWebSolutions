@@ -35,21 +35,21 @@ abstract class StudentRoomDatabase : RoomDatabase() {
                     StudentRoomDatabase::class.java,
                     "student_database"
                 ).fallbackToDestructiveMigration()
-                    .addCallback(WordDatabaseCallback(scope))
+                    .addCallback(StudentDatabaseCallback(scope))
                     .build()
                 INSTANCE = instance
                 instance
             }
         }
 
-        private class WordDatabaseCallback(
+        private class StudentDatabaseCallback(
             private val scope: CoroutineScope,
         ) : Callback() {
             override fun onCreate(db: SupportSQLiteDatabase) {
                 super.onCreate(db)
                 // If you want to keep the data through app restarts,
                 // comment out the following line.
-                INSTANCE?.let { database ->
+                INSTANCE?.let {
                     scope.launch(Dispatchers.IO) {
                     }
                 }

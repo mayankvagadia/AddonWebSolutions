@@ -75,7 +75,6 @@ class StudentRegisterActivity : AppCompatActivity() {
             }
             val student = Student(null, edStudentName.text.toString(), selectedGender, ImagePath)
             studentViewModel.insert(student)
-//            db.addStudent(edStudentName.text.toString(), selectedGender, ImagePath)
             finish()
         }
     }

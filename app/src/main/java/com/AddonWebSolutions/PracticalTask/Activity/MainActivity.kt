@@ -38,7 +38,9 @@ class MainActivity : AppCompatActivity() {
         }
 
         studentViewModel.allStudent.observe(this) {
-            adapter.setData(it)
+            it.let {
+                adapter.setData(it)
+            }
         }
     }
 }

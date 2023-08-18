@@ -39,6 +39,7 @@ class StudentAdapter(private val context: Context) :
 
     fun setData(student: List<Student>) {
         this.student = student
+        notifyDataSetChanged()
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): StudentViewHolder {
